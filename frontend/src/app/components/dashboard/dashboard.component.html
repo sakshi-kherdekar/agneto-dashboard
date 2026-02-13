@@ -1,0 +1,45 @@
+<header>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <mat-icon class="nav-logo">dashboard</mat-icon>
+      <span class="nav-title">Team Agneto</span>
+    </div>
+    <div class="nav-actions">
+      <button mat-button class="nav-btn" (click)="openTeamMembers()" matTooltip="View team members">
+        <mat-icon>groups</mat-icon>
+        <span class="btn-label">Team</span>
+      </button>
+      <button mat-button class="nav-btn" (click)="openCreateEvent()" matTooltip="Add event, holiday, or birthday">
+        <mat-icon>add_circle_outline</mat-icon>
+        <span class="btn-label">Create Event</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main class="dashboard-content">
+  <!-- Row 1: Clock + Team Info -->
+  <div class="top-row">
+    <div class="grid-clock">
+      <app-clock />
+    </div>
+    <div class="grid-team">
+      <app-team-info />
+    </div>
+  </div>
+
+  <!-- Row 2: Notification Schedule -->
+  <section class="section-row">
+    <app-notification-schedule />
+  </section>
+
+  <!-- Row 3: Events / Holidays / Birthdays -->
+  <section class="section-row">
+    <app-upcoming-events />
+  </section>
+
+  <!-- Row 4: Free-form notes -->
+  <section class="section-row">
+    <app-events />
+  </section>
+</main>
