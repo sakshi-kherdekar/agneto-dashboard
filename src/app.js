@@ -12,6 +12,8 @@ const routes       = require('./routes/index');
 const errorHandler = require('./middleware/errorHandler');
 const notFound     = require('./middleware/notFound');
 const { TEAM_NAME } = require('./config/constants');
+const swaggerUi    = require('swagger-ui-express');
+const swaggerSpec  = require('./config/swagger');
 
 const app = express();
 
@@ -45,6 +47,11 @@ app.get('/health', (_req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+// ─── Swagger UI ────────────────────────────────────────────
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customSiteTitle: 'Team Agneto API Docs',
+}));
 
 // ─── API routes ────────────────────────────────────────────
 app.use('/api', routes);
