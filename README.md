@@ -72,9 +72,8 @@ Open `http://localhost:4200/` in your browser.
 ### Backend
 
 ```bash
-cd dashboard-backend   # if in separate directory
 npm install
-cp .env.example .env   # configure DB, weather API key
+cp .env.example .env
 mysql -u root -p < sql/schema.sql
 npm run dev
 ```
