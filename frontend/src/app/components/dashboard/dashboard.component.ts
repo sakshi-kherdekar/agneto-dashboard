@@ -8,6 +8,7 @@ import { TeamInfoComponent } from '../team-info/team-info.component';
 import { NotificationScheduleComponent } from '../notification-schedule/notification-schedule.component';
 import { UpcomingEventsComponent, DashboardEvent } from '../upcoming-events/upcoming-events.component';
 import { EventsComponent } from '../events/events.component';
+import { SeatingArrangementComponent } from '../seating-arrangement/seating-arrangement.component';
 import { TeamMembersDialogComponent } from '../team-members-dialog/team-members-dialog.component';
 import { CreateEventDialogComponent, NewEvent } from '../create-event-dialog/create-event-dialog.component';
 
@@ -23,6 +24,7 @@ import { CreateEventDialogComponent, NewEvent } from '../create-event-dialog/cre
     NotificationScheduleComponent,
     UpcomingEventsComponent,
     EventsComponent,
+    SeatingArrangementComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -30,6 +32,7 @@ import { CreateEventDialogComponent, NewEvent } from '../create-event-dialog/cre
 export class DashboardComponent {
   @ViewChild(UpcomingEventsComponent) upcomingEvents!: UpcomingEventsComponent;
   @ViewChild(TeamInfoComponent) teamInfo!: TeamInfoComponent;
+  @ViewChild(SeatingArrangementComponent) seatingArrangement!: SeatingArrangementComponent;
 
   private nextId = 100;
 
@@ -64,5 +67,9 @@ export class DashboardComponent {
         this.upcomingEvents.addEvent(event);
       }
     });
+  }
+
+  shuffleSeats(): void {
+    this.seatingArrangement?.shuffle();
   }
 }

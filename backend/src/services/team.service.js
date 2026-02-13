@@ -30,4 +30,20 @@ async function getTeamInfo() {
   };
 }
 
-module.exports = { getTeamInfo };
+/**
+ * Returns just the active member list (for /api/team/members).
+ */
+async function getTeamMembers() {
+  const [members] = await query(
+    `SELECT id, employee_id, first_name, last_name, nick_name,
+            CONCAT(first_name, ' ', last_name) AS full_name,
+            email, role, birthday, joined_date
+     FROM team_members
+     WHERE is_active = 1
+     ORDER BY last_name ASC, first_name ASC`,
+    [],
+  );
+  return members;
+}
+
+module.exports = { getTeamInfo, getTeamMembers };

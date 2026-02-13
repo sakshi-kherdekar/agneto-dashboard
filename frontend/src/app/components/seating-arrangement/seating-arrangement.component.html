@@ -1,0 +1,43 @@
+<div class="card light-card seating-card">
+  <div class="section-header">
+    <mat-icon class="section-icon seating-icon">event_seat</mat-icon>
+    <h3 class="section-title">Today's Seating</h3>
+    <span class="date-label">{{ todayLabel }}</span>
+  </div>
+
+  @if (topSeats.length > 0) {
+    <div class="table-layout">
+      <!-- Top row: 3 seats -->
+      <div class="seats-row top-row">
+        @for (seat of topSeats; track seat.nickname) {
+          <div class="seat">
+            <div class="seat-avatar" [style.background]="seat.avatar">
+              {{ seat.initial }}
+            </div>
+            <span class="seat-nickname">{{ seat.nickname }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Conference table -->
+      <div class="conference-table">
+        <mat-icon class="table-icon">table_restaurant</mat-icon>
+        <span class="table-label">Developer Table</span>
+      </div>
+
+      <!-- Bottom row: 4 seats -->
+      <div class="seats-row bottom-row">
+        @for (seat of bottomSeats; track seat.nickname) {
+          <div class="seat">
+            <div class="seat-avatar" [style.background]="seat.avatar">
+              {{ seat.initial }}
+            </div>
+            <span class="seat-nickname">{{ seat.nickname }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <p class="empty-text">No developer data available</p>
+  }
+</div>

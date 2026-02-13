@@ -8,3 +8,10 @@ exports.getTeamInfo = async (req, res, next) => {
     res.json({ success: true, data });
   } catch (err) { next(err); }
 };
+
+exports.getTeamMembers = async (req, res, next) => {
+  try {
+    const data = await teamService.getTeamMembers();
+    res.json({ success: true, data });
+  } catch (err) { next(err); }
+};

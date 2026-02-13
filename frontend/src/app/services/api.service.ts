@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { TeamMember, WeatherData, Notification, Reminder } from '../models/models';
 import { DashboardEvent } from '../components/upcoming-events/upcoming-events.component';
 
@@ -14,7 +14,8 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   getTeamMembers(): Observable<TeamMember[]> {
-    return this.http.get<TeamMember[]>(`${this.baseUrl}/team-members`).pipe(
+    return this.http.get<{ success: boolean; data: TeamMember[] }>(`${this.baseUrl}/team/members`).pipe(
+      map(res => res.data),
       catchError(() => of([]))
     );
   }

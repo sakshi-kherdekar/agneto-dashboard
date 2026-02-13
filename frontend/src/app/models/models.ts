@@ -1,6 +1,7 @@
 export interface TeamMember {
   id: number;
   name: string;
+  nickname: string;
   birthday: string;
   phoneNumbers: string[];
   plannedLeaveStartDate: string | null;
