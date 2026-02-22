@@ -1,14 +1,17 @@
 .seating-card {
-  background: #fff;
-  border: 1px solid #e8e8ef;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
   border-radius: 16px;
-  padding: 20px 24px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 14px 24px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(102, 126, 234, 0.1);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  &.shake {
+    animation: tableShake 0.5s ease-in-out;
   }
 }
 
@@ -16,7 +19,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 
 .section-icon {
@@ -25,120 +28,328 @@
   height: 22px;
 }
 
-.seating-icon {
-  color: #667eea;
-}
+.seating-icon { color: var(--accent-primary); }
 
 .section-title {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
-  color: #2d2d3a;
+  color: var(--text-primary);
 }
 
 .date-label {
   margin-left: auto;
   font-size: 0.78rem;
-  color: #999;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
-.table-layout {
+/* ---- Table Scene ---- */
+.table-scene {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
+  padding: 10px 0;
 }
 
 .seats-row {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 32px;
 }
 
-.seat {
+/* ---- Workstation ---- */
+.workstation {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  &.shuffling {
+    animation: flyOff 0.5s ease-in forwards;
+  }
+
+  &.landed {
+    animation: dropIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
 }
 
-.seat-avatar {
-  width: 44px;
-  height: 44px;
+/* ---- Person Avatar (stays hardcoded — per-member identity) ---- */
+.person {
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-weight: 600;
-  font-size: 1.1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  transition: transform 0.2s;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.2) rotate(10deg);
   }
 }
 
-.seat-nickname {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: #555;
+.person-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
   text-align: center;
-  max-width: 70px;
+  max-width: 80px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.conference-table {
+/* ---- Chair (stays hardcoded — physical object) ---- */
+.chair {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.chair-back {
+  width: 36px;
+  height: 8px;
+  background: linear-gradient(180deg, #546e7a 0%, #455a64 100%);
+  border-radius: 4px 4px 1px 1px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.chair-seat {
+  width: 32px;
+  height: 6px;
+  background: linear-gradient(180deg, #607d8b 0%, #546e7a 100%);
+  border-radius: 2px;
+}
+
+/* ---- Monitor (stays hardcoded — physical object) ---- */
+.monitor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.monitor-screen {
+  width: 56px;
+  height: 34px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 4px 4px 0 0;
+  border: 2px solid #333;
+  border-bottom: none;
+  overflow: hidden;
+  padding: 4px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
+  }
+}
+
+.screen-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 2px;
+}
+
+/* ---- Code lines (stays hardcoded — decorative) ---- */
+.code-line {
+  height: 2px;
+  border-radius: 1px;
+  animation: codeTyping 2s ease-in-out infinite;
+
+  &.short {
+    width: 40%;
+    background: #4fc3f7;
+  }
+  &.medium {
+    width: 65%;
+    background: #81c784;
+  }
+  &.long {
+    width: 85%;
+    background: #ffb74d;
+  }
+}
+
+.monitor-stand {
+  width: 8px;
+  height: 6px;
+  background: linear-gradient(180deg, #555 0%, #444 100%);
+}
+
+.monitor-base {
+  width: 22px;
+  height: 3px;
+  background: linear-gradient(180deg, #666 0%, #555 100%);
+  border-radius: 0 0 2px 2px;
+}
+
+/* ---- Long Table (stays hardcoded — furniture) ---- */
+.long-table {
+  width: 100%;
+  max-width: 520px;
+  margin: 4px 0;
+}
+
+.table-surface {
+  background: linear-gradient(135deg, #8d6e63 0%, #a1887f 30%, #8d6e63 70%, #795548 100%);
+  border-radius: 14px;
+  padding: 10px 20px;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.table-texture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 20px,
+    rgba(0,0,0,0.03) 20px,
+    rgba(0,0,0,0.03) 21px
+  );
+  border-radius: 14px;
+}
+
+.table-center-strip {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  width: 100%;
-  max-width: 360px;
-  padding: 10px 24px;
-  background: linear-gradient(135deg, #8d6e63 0%, #a1887f 50%, #8d6e63 100%);
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  gap: 12px;
+  position: relative;
+  z-index: 1;
 }
 
-.table-icon {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+.table-decor-icon {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 .table-label {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.85);
   font-size: 0.82rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.table-legs {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.table-leg {
+  width: 8px;
+  height: 6px;
+  background: #6d4c41;
+  border-radius: 0 0 2px 2px;
+}
+
+/* ---- Animations ---- */
+@keyframes flyOff {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-60px) rotate(180deg) scale(0.5);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-120px) rotate(360deg) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes dropIn {
+  0% {
+    transform: translateY(-80px) rotate(-180deg) scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(8px) rotate(10deg) scale(1.1);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-4px) rotate(-5deg) scale(0.95);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes tableShake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-4px) rotate(-0.5deg); }
+  20% { transform: translateX(4px) rotate(0.5deg); }
+  30% { transform: translateX(-3px) rotate(-0.3deg); }
+  40% { transform: translateX(3px) rotate(0.3deg); }
+  50% { transform: translateX(-2px); }
+  60% { transform: translateX(2px); }
+  70% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+}
+
+@keyframes codeTyping {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; width: calc(100% - 8px); }
 }
 
 .empty-text {
-  color: #aaa;
+  color: var(--text-muted);
   font-size: 0.85rem;
   margin: 4px 0;
   text-align: center;
 }
 
+/* ---- Responsive ---- */
 @media (max-width: 768px) {
   .seats-row {
-    gap: 12px;
+    gap: 16px;
   }
 
-  .seat-avatar {
-    width: 36px;
-    height: 36px;
-    font-size: 0.9rem;
+  .person {
+    width: 34px;
+    height: 34px;
+    font-size: 0.85rem;
   }
 
-  .conference-table {
-    max-width: 280px;
-    padding: 8px 16px;
+  .monitor-screen {
+    width: 44px;
+    height: 28px;
   }
+
+  .long-table {
+    max-width: 360px;
+  }
+
+  .chair-back { width: 28px; }
+  .chair-seat { width: 24px; }
 }

@@ -63,11 +63,11 @@ export interface NewEvent {
       display: flex;
       align-items: center;
       gap: 8px;
-      color: #2d2d3a;
+      color: var(--text-primary);
     }
 
     .title-icon {
-      color: #667eea;
+      color: var(--accent-primary);
     }
 
     .form-content {
@@ -83,11 +83,11 @@ export interface NewEvent {
     }
 
     .cancel-btn {
-      color: #888;
+      color: var(--text-muted);
     }
 
     .save-btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: var(--gradient-primary);
       color: #fff;
       border-radius: 24px;
 

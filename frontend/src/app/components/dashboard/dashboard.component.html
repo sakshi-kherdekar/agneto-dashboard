@@ -1,44 +1,44 @@
-<header>
-  <nav class="navbar">
-    <div class="nav-brand">
+<header class="header">
+  <div class="header-inner">
+    <div class="header-left">
       <img src="agneto_logo.png" alt="Agneto Logo" class="nav-logo">
     </div>
-    <span class="nav-title">Team Dashboard</span>
-    <div class="nav-actions">
-      <button mat-button class="nav-btn" (click)="openTeamMembers()" matTooltip="View team members">
+    <h1 class="header-title">Team Dashboard</h1>
+    <div class="header-right">
+      <button class="action-pill" (click)="openTeamMembers()" matTooltip="View team members">
         <mat-icon>groups</mat-icon>
-        <span class="btn-label">Team</span>
+        <span class="pill-label">Team</span>
       </button>
-      <button mat-button class="nav-btn" (click)="openCreateEvent()" matTooltip="Add event, holiday, or birthday">
+      <button class="action-pill" (click)="openCreateEvent()" matTooltip="Add event, holiday, or birthday">
         <mat-icon>add_circle_outline</mat-icon>
-        <span class="btn-label">Create Event</span>
+        <span class="pill-label">Event</span>
       </button>
-      <button mat-button class="nav-btn" (click)="shuffleSeats()" matTooltip="Shuffle seating arrangement">
+      <button class="action-pill theme-pill" (click)="cycleTheme()" [matTooltip]="themeService.currentTheme().name + ' theme'">
+        <mat-icon>{{ themeService.currentTheme().icon }}</mat-icon>
+        <span class="pill-label">Theme</span>
+      </button>
+      <button class="action-pill shuffle-pill" (click)="shuffleSeats()" matTooltip="Shuffle seating arrangement">
         <mat-icon>shuffle</mat-icon>
-        <span class="btn-label">Shuffle</span>
+        <span class="pill-label">Shuffle</span>
       </button>
     </div>
-  </nav>
+  </div>
 </header>
 
 <main class="dashboard-content">
-  <!-- Section 1: Today's Seating (full width) -->
   <section class="section-row">
     <app-seating-arrangement />
   </section>
 
-  <!-- Section 2: Weather + Team Info -->
   <div class="section-grid section-two-col">
     <app-weather />
     <app-team-info />
   </div>
 
-  <!-- Section 3: Events / Holidays / Birthdays -->
   <section class="section-row">
     <app-upcoming-events />
   </section>
 
-  <!-- Section 4: Notifications + Notes -->
   <div class="section-grid section-two-col">
     <app-notification-schedule />
     <app-events />

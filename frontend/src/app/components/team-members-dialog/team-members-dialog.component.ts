@@ -48,15 +48,24 @@ import { TeamMember } from '../../models/models';
     </mat-dialog-actions>
   `,
   styles: [`
+    :host {
+      display: block;
+    }
+
+    ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+      background: var(--bg-card) !important;
+      color: var(--text-primary) !important;
+    }
+
     .dialog-title {
       display: flex;
       align-items: center;
       gap: 8px;
-      color: #2d2d3a;
+      color: var(--text-primary);
     }
 
     .title-icon {
-      color: #667eea;
+      color: var(--accent-primary);
     }
 
     .members-content {
@@ -73,12 +82,12 @@ import { TeamMember } from '../../models/models';
       gap: 10px;
       padding: 10px 12px;
       border-radius: 10px;
-      background: #f5f6fa;
+      background: var(--bg-item);
       transition: background 0.15s;
     }
 
     .member-card:hover {
-      background: #eef0fb;
+      background: var(--bg-item-hover);
     }
 
     .member-avatar {
@@ -104,12 +113,12 @@ import { TeamMember } from '../../models/models';
     .member-name {
       font-weight: 500;
       font-size: 0.9rem;
-      color: #2d2d3a;
+      color: var(--text-primary);
     }
 
     .member-role {
       font-size: 0.78rem;
-      color: #888;
+      color: var(--text-muted);
     }
 
     .member-details {
@@ -124,11 +133,11 @@ import { TeamMember } from '../../models/models';
       align-items: center;
       gap: 4px;
       font-size: 0.72rem;
-      color: #999;
+      color: var(--text-muted);
     }
 
     .detail-item.leave {
-      color: #e91e63;
+      color: var(--accent-birthday);
     }
 
     .detail-icon {
@@ -138,7 +147,7 @@ import { TeamMember } from '../../models/models';
     }
 
     .close-btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: var(--gradient-primary);
       color: #fff;
       border-radius: 24px;
     }

@@ -11,6 +11,7 @@ import { EventsComponent } from '../events/events.component';
 import { SeatingArrangementComponent } from '../seating-arrangement/seating-arrangement.component';
 import { TeamMembersDialogComponent } from '../team-members-dialog/team-members-dialog.component';
 import { CreateEventDialogComponent, NewEvent } from '../create-event-dialog/create-event-dialog.component';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,7 +37,10 @@ export class DashboardComponent {
 
   private nextId = 100;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    protected themeService: ThemeService,
+  ) {}
 
   openTeamMembers(): void {
     this.dialog.open(TeamMembersDialogComponent, {
@@ -71,5 +75,9 @@ export class DashboardComponent {
 
   shuffleSeats(): void {
     this.seatingArrangement?.shuffle();
+  }
+
+  cycleTheme(): void {
+    this.themeService.cycleTheme();
   }
 }
