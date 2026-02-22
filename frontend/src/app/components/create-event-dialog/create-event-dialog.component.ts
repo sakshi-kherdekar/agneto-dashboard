@@ -73,8 +73,8 @@ export interface NewEvent {
     .form-content {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      padding: 8px 0;
+      gap: 12px;
+      padding: 16px 0;
       min-width: 360px;
     }
 

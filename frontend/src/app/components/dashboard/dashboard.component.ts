@@ -12,6 +12,7 @@ import { SeatingArrangementComponent } from '../seating-arrangement/seating-arra
 import { TeamMembersDialogComponent } from '../team-members-dialog/team-members-dialog.component';
 import { CreateEventDialogComponent, NewEvent } from '../create-event-dialog/create-event-dialog.component';
 import { ThemeService } from '../../services/theme.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,10 +36,9 @@ export class DashboardComponent {
   @ViewChild(TeamInfoComponent) teamInfo!: TeamInfoComponent;
   @ViewChild(SeatingArrangementComponent) seatingArrangement!: SeatingArrangementComponent;
 
-  private nextId = 100;
-
   constructor(
     private dialog: MatDialog,
+    private apiService: ApiService,
     protected themeService: ThemeService,
   ) {}
 
@@ -52,23 +52,15 @@ export class DashboardComponent {
 
   openCreateEvent(): void {
     const dialogRef = this.dialog.open(CreateEventDialogComponent, {
-      width: '440px',
+      width: '540px',
       autoFocus: 'first-tabbable'
     });
 
     dialogRef.afterClosed().subscribe((result: NewEvent | null) => {
       if (result && this.upcomingEvents) {
-        const event: DashboardEvent = {
-          id: this.nextId++,
-          title: result.title,
-          date: new Date(result.date).toLocaleDateString('en-US', {
-            weekday: 'long',
-            month: 'short',
-            day: 'numeric'
-          }),
-          type: result.type
-        };
-        this.upcomingEvents.addEvent(event);
+        this.apiService.createEvent(result).subscribe(event => {
+          this.upcomingEvents.addEvent(event);
+        });
       }
     });
   }

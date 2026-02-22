@@ -61,8 +61,16 @@ export class ApiService {
     return `${days[d.getUTCDay()]}, ${months[d.getUTCMonth()]} ${d.getUTCDate()}`;
   }
 
-  createEvent(event: Partial<DashboardEvent>): Observable<DashboardEvent> {
-    return this.http.post<DashboardEvent>(`${this.baseUrl}/events`, event);
+  createEvent(event: { title: string; date: string; type: string }): Observable<DashboardEvent> {
+    const body = { title: event.title, event_date: event.date, event_type: event.type };
+    return this.http.post<{ success: boolean; data: any }>(`${this.baseUrl}/events`, body).pipe(
+      map(res => ({
+        id: res.data.id,
+        title: res.data.title,
+        date: this.formatDate(res.data.event_date),
+        type: res.data.event_type,
+      }))
+    );
   }
 
   getWeather(): Observable<WeatherData> {
