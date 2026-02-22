@@ -11,6 +11,8 @@ import { EventsComponent } from '../events/events.component';
 import { SeatingArrangementComponent } from '../seating-arrangement/seating-arrangement.component';
 import { TeamMembersDialogComponent } from '../team-members-dialog/team-members-dialog.component';
 import { CreateEventDialogComponent, NewEvent } from '../create-event-dialog/create-event-dialog.component';
+import { ThemeService } from '../../services/theme.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,9 +36,11 @@ export class DashboardComponent {
   @ViewChild(TeamInfoComponent) teamInfo!: TeamInfoComponent;
   @ViewChild(SeatingArrangementComponent) seatingArrangement!: SeatingArrangementComponent;
 
-  private nextId = 100;
-
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private apiService: ApiService,
+    protected themeService: ThemeService,
+  ) {}
 
   openTeamMembers(): void {
     this.dialog.open(TeamMembersDialogComponent, {
@@ -48,28 +52,34 @@ export class DashboardComponent {
 
   openCreateEvent(): void {
     const dialogRef = this.dialog.open(CreateEventDialogComponent, {
-      width: '440px',
+      width: '540px',
       autoFocus: 'first-tabbable'
     });
 
     dialogRef.afterClosed().subscribe((result: NewEvent | null) => {
       if (result && this.upcomingEvents) {
-        const event: DashboardEvent = {
-          id: this.nextId++,
-          title: result.title,
-          date: new Date(result.date).toLocaleDateString('en-US', {
-            weekday: 'long',
-            month: 'short',
-            day: 'numeric'
-          }),
-          type: result.type
-        };
-        this.upcomingEvents.addEvent(event);
+        this.apiService.createEvent(result).subscribe(event => {
+          this.upcomingEvents.addEvent(event);
+        });
       }
     });
   }
 
   shuffleSeats(): void {
-    this.seatingArrangement?.shuffle();
+    const password = window.prompt('Enter password to shuffle:');
+    if (!password) return;
+
+    const seed = Math.floor(Math.random() * 2147483647);
+    this.apiService.updateSeatingSeed(seed, password).subscribe(res => {
+      if (res.success) {
+        this.seatingArrangement?.shuffle(seed);
+      } else {
+        window.alert('Wrong password — shuffle denied.');
+      }
+    });
+  }
+
+  cycleTheme(): void {
+    this.themeService.cycleTheme();
   }
 }

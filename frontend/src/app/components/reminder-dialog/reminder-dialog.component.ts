@@ -69,12 +69,12 @@ const REMINDER_COLORS: Record<string, string> = {
 
     .reminder-message {
       font-size: 1rem;
-      color: #666;
+      color: var(--text-muted);
       margin: 0 0 24px;
     }
 
     .dismiss-btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: var(--gradient-primary);
       color: #fff;
       border-radius: 24px;
       padding: 6px 32px;
